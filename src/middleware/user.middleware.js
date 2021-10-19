@@ -2,11 +2,11 @@
  * @Author: aze
  * @Date: 2021-10-19 10:36:17
  * @LastEditors: aze
- * @LastEditTime: 2021-10-19 15:09:26
+ * @LastEditTime: 2021-10-19 16:12:59
  * @Description:
  * @FilePath: \koa-pro\src\middleware\user.middleware.js
  */
-
+const bcrypt = require('bcryptjs')
 const { getUserInfo } = require('../service/user.service')
 const { userFormateError, userAleadyExited, userRegisterError } = require('../consitant/err.type')
 const userValidator = async (ctx, next) => {
@@ -39,4 +39,12 @@ const verifyUser = async (ctx, next) => {
   await next()
 }
 
-module.exports = { userValidator, verifyUser }
+const bcryptPassword = async (ctx, next) => {
+  const { password } = ctx.request.body
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+  ctx.request.body.password = hash
+  await next()
+}
+
+module.exports = { userValidator, verifyUser, bcryptPassword }

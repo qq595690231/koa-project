@@ -20,7 +20,7 @@ class UserController {
         },
       }
     } catch (err) {
-      console.log(err);
+      console.log(err, '用户名重复');
       ctx.app.emit('error', userRegisterError, ctx)
 
     }
