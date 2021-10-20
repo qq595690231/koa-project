@@ -15,10 +15,13 @@ class UserService {
     user_name && Object.assign(whereOpt, { user_name })
     password && Object.assign(whereOpt, { password })
     is_admin && Object.assign(whereOpt, { is_admin })
-    const res = User.findOne({
-      attributes: ['id', 'user_name', 'password', 'is_admin'],//attributes为SELECT 查询特定属性
+    // 不加 await 会拿不到当前条数据一直pending
+    const res = await User.findOne({
+      attributes: ['id', 'user_name', 'password', 'is_admin'],//attributes为 SELECT 要查询的特定属性
       where: whereOpt
+
     })
+    console.log(res, 'res11');
     // console.log(res, '22');
     return res ? res.dataValues : null
   }
